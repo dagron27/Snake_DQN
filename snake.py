@@ -67,36 +67,36 @@ class SnakeGame:
     
     def update(self, direction=None):
         """Update game state based on direction."""
-        # If direction is provided and valid, update direction
         if direction and self.is_valid_direction(direction):
             self.direction = direction
         
-        # Calculate new head position
         head = self.snake[0]
         new_head = (head[0] + self.direction[0], head[1] + self.direction[1])
         
-        # Check for collisions with walls
+        # Collision with wall
         if (new_head[0] < 0 or new_head[0] >= self.height or
             new_head[1] < 0 or new_head[1] >= self.width):
             self.game_over = True
-            return
+            return False  # food not eaten
         
-        # Check for collisions with self
+        # Collision with self
         if new_head in self.snake:
             self.game_over = True
-            return
+            return False
         
         # Move snake
         self.snake.insert(0, new_head)
-        
-        # Check if food eaten
+
+        # Check food
         if new_head == self.food_position:
             self.score += 1
             self.place_food()
+            self.steps += 1
+            return True  # food eaten
         else:
-            self.snake.pop()  # Remove tail if no food eaten
-        
-        self.steps += 1
+            self.snake.pop()
+            self.steps += 1
+            return False
     
     def is_valid_direction(self, new_dir):
         """Prevent 180-degree turns."""
