@@ -9,12 +9,13 @@ class Direction(Enum):
     UP = (-1, 0)
 
 class SnakeGame:
-    def __init__(self, width=20, height=20, cell_size=20, fps=10, seed=None):
+    def __init__(self, width=20, height=20, cell_size=20, fps=10, display_game=True, seed=None):
         # Game parameters
         self.width = width
         self.height = height
         self.cell_size = cell_size
         self.fps = fps
+        self.display_game = display_game
         
         # Set random seed if provided
         if seed is not None:
@@ -32,8 +33,6 @@ class SnakeGame:
         # Initialize game
         self.reset()
         
-        # Set up pygame for human play (can be disabled for RL training)
-        self.display_game = True
         if self.display_game:
             pygame.init()
             self.screen_width = width * cell_size
